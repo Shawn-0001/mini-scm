@@ -7,6 +7,7 @@ import './assets/styles/element-variables.scss'
 
 import '@/assets/styles/index.scss' // global css
 import '@/assets/styles/ruoyi.scss' // ruoyi css
+import '@/assets/styles/el-dialog.css'
 import App from './App'
 import store from './store'
 import router from './router'
@@ -37,6 +38,8 @@ import DictTag from '@/components/DictTag'
 import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
+// 弹窗拖拽
+import '@/utils/directives'; 
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
