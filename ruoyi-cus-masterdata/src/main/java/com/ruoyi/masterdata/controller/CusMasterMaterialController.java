@@ -77,7 +77,16 @@ public class CusMasterMaterialController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody CusMasterMaterial cusMasterMaterial)
     {
-        return toAjax(cusMasterMaterialService.insertCusMasterMaterial(cusMasterMaterial));
+        String code = cusMasterMaterial.getCode();
+        CusMasterMaterial m = cusMasterMaterialService.selectMaterialMasterByCode(cusMasterMaterial.getCode());
+        if (m != null) {
+            return error("物料编码： <" + code + ">  已经存在, 请重新输入！");
+        } else {
+            cusMasterMaterial.setUpdateBy(getUsername());
+            cusMasterMaterialService.insertCusMasterMaterial(cusMasterMaterial);
+//            cusMasterMaterialService.insertMaterialSummaries(code);
+            return success();
+        }
     }
 
     /**

@@ -20,6 +20,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, code, name, models, unit, create_by, create_time, update_by, update_time from cus_master_material
     </sql>
 
+<!--    check wether material exists by material code-->
+    <select id="selectMaterialMasterByCode" parameterType="String" resultMap="CusMasterMaterialResult">
+        <include refid="selectCusMasterMaterialVo"/>
+        where code = #{code}
+    </select>
+<!--   material List -->
     <select id="selectCusMasterMaterialList" parameterType="CusMasterMaterial" resultMap="CusMasterMaterialResult">
         <include refid="selectCusMasterMaterialVo"/>
         <where>

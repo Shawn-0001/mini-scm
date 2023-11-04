@@ -13,6 +13,14 @@ public interface CusMasterMaterialMapper
 {
     /**
      * 查询物料主数据
+     *
+     * @param code 物料主数据主键
+     * @return 物料主数据
+     */
+    public CusMasterMaterial selectMaterialMasterByCode(String code);
+
+    /**
+     * 查询物料主数据
      * 
      * @param id 物料主数据主键
      * @return 物料主数据

@@ -22,6 +22,18 @@ public class CusMasterMaterialServiceImpl implements ICusMasterMaterialService
 
     /**
      * 查询物料主数据
+     *
+     * @param code 物料主数据主键
+     * @return 物料主数据
+     */
+    @Override
+    public CusMasterMaterial selectMaterialMasterByCode(String code)
+    {
+        return cusMasterMaterialMapper.selectMaterialMasterByCode(code);
+    }
+
+    /**
+     * 查询物料主数据
      * 
      * @param id 物料主数据主键
      * @return 物料主数据
