@@ -20,6 +20,14 @@ public interface CusMasterCustomerMapper
     public CusMasterCustomer selectCusMasterCustomerById(Long id);
 
     /**
+     * 查询客户主数据
+     *
+     * @param code 客户主数据编码
+     * @return 客户主数据
+     */
+    public CusMasterCustomer selectCustomerMasterByCode(String code);
+
+    /**
      * 查询客户主数据列表
      * 
      * @param cusMasterCustomer 客户主数据

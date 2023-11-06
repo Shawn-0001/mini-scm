@@ -2,6 +2,7 @@ package com.ruoyi.masterdata.service;
 
 import java.util.List;
 import com.ruoyi.masterdata.domain.CusMasterCustomer;
+import com.ruoyi.masterdata.domain.CusMasterMaterial;
 
 /**
  * 客户主数据Service接口
@@ -18,6 +19,14 @@ public interface ICusMasterCustomerService
      * @return 客户主数据
      */
     public CusMasterCustomer selectCusMasterCustomerById(Long id);
+
+    /**
+     * 查询客户主数据
+     *
+     * @param code 客户主数据编码
+     * @return 客户主数据
+     */
+    public CusMasterCustomer selectCustomerMasterByCode(String code);
 
     /**
      * 查询客户主数据列表

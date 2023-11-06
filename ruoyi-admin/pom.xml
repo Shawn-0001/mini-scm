@@ -67,6 +67,12 @@
             <artifactId>ruoyi-cus-masterdata</artifactId>
         </dependency>
 
+        <!-- 运单管理-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-cus-tms</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

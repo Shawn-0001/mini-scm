@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.tms.mapper.CusTMSShippingInfoMapper">
+    
+    <resultMap type="CusTMSShippingInfo" id="CusTMSShippingInfoResult">
+        <result property="id"    column="id"    />
+        <result property="shippingOrder"    column="shipping_order"    />
+        <result property="shippingType"    column="shipping_type"    />
+        <result property="batchNumber"    column="batch_number"    />
+        <result property="tractorNumber"    column="tractor_number"    />
+        <result property="shippingFrom"    column="shipping_from"    />
+        <result property="shippingTo"    column="shipping_to"    />
+        <result property="weight"    column="weight"    />
+        <result property="handledBy"    column="handled_by"    />
+        <result property="phone"    column="phone"    />
+        <result property="materialCode"    column="material_code"    />
+        <result property="businessDate"    column="business_date"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="landingWeight"    column="landing_weight"    />
+        <result property="effectiveWeight"    column="effective_weight"    />
+        <result property="effectiveUnitPrice"    column="effective_unit_price"    />
+        <result property="landingDate"    column="landing_date"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCusTMSShippingInfoVo">
+        select id, shipping_order, shipping_type, batch_number, tractor_number, shipping_from, shipping_to, weight, handled_by, phone, material_code, business_date, unit_price, landing_weight, effective_weight, effective_unit_price, landing_date, status, create_by, create_time, update_by, update_time from cus_tms_shipping_info
+    </sql>
+
+    <select id="selectCusTMSShippingInfoList" parameterType="CusTMSShippingInfo" resultMap="CusTMSShippingInfoResult">
+        <include refid="selectCusTMSShippingInfoVo"/>
+        <where>  
+            <if test="shippingOrder != null  and shippingOrder != ''"> and shipping_order like concat('%', #{shippingOrder}, '%')</if>
+            <if test="tractorNumber != null  and tractorNumber != ''"> and tractor_number like concat('%', #{tractorNumber}, '%')</if>
+            <if test="handledBy != null  and handledBy != ''"> and handled_by = #{handledBy}</if>
+            <if test="businessDate != null "> and business_date = #{businessDate}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectCusTMSShippingInfoById" parameterType="Long" resultMap="CusTMSShippingInfoResult">
+        <include refid="selectCusTMSShippingInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCusTMSShippingInfo" parameterType="CusTMSShippingInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into cus_tms_shipping_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shippingOrder != null and shippingOrder != ''">shipping_order,</if>
+            <if test="shippingType != null and shippingType != ''">shipping_type,</if>
+            <if test="batchNumber != null and batchNumber != ''">batch_number,</if>
+            <if test="tractorNumber != null and tractorNumber != ''">tractor_number,</if>
+            <if test="shippingFrom != null">shipping_from,</if>
+            <if test="shippingTo != null">shipping_to,</if>
+            <if test="weight != null">weight,</if>
+            <if test="handledBy != null and handledBy != ''">handled_by,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="materialCode != null and materialCode != ''">material_code,</if>
+            <if test="businessDate != null">business_date,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="landingWeight != null">landing_weight,</if>
+            <if test="effectiveWeight != null">effective_weight,</if>
+            <if test="effectiveUnitPrice != null">effective_unit_price,</if>
+            <if test="landingDate != null">landing_date,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shippingOrder != null and shippingOrder != ''">#{shippingOrder},</if>
+            <if test="shippingType != null and shippingType != ''">#{shippingType},</if>
+            <if test="batchNumber != null and batchNumber != ''">#{batchNumber},</if>
+            <if test="tractorNumber != null and tractorNumber != ''">#{tractorNumber},</if>
+            <if test="shippingFrom != null">#{shippingFrom},</if>
+            <if test="shippingTo != null">#{shippingTo},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="handledBy != null and handledBy != ''">#{handledBy},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="materialCode != null and materialCode != ''">#{materialCode},</if>
+            <if test="businessDate != null">#{businessDate},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="landingWeight != null">#{landingWeight},</if>
+            <if test="effectiveWeight != null">#{effectiveWeight},</if>
+            <if test="effectiveUnitPrice != null">#{effectiveUnitPrice},</if>
+            <if test="landingDate != null">#{landingDate},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCusTMSShippingInfo" parameterType="CusTMSShippingInfo">
+        update cus_tms_shipping_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shippingOrder != null and shippingOrder != ''">shipping_order = #{shippingOrder},</if>
+            <if test="shippingType != null and shippingType != ''">shipping_type = #{shippingType},</if>
+            <if test="batchNumber != null and batchNumber != ''">batch_number = #{batchNumber},</if>
+            <if test="tractorNumber != null and tractorNumber != ''">tractor_number = #{tractorNumber},</if>
+            <if test="shippingFrom != null">shipping_from = #{shippingFrom},</if>
+            <if test="shippingTo != null">shipping_to = #{shippingTo},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="handledBy != null and handledBy != ''">handled_by = #{handledBy},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="materialCode != null and materialCode != ''">material_code = #{materialCode},</if>
+            <if test="businessDate != null">business_date = #{businessDate},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="landingWeight != null">landing_weight = #{landingWeight},</if>
+            <if test="effectiveWeight != null">effective_weight = #{effectiveWeight},</if>
+            <if test="effectiveUnitPrice != null">effective_unit_price = #{effectiveUnitPrice},</if>
+            <if test="landingDate != null">landing_date = #{landingDate},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCusTMSShippingInfoById" parameterType="Long">
+        delete from cus_tms_shipping_info where id = #{id}
+    </delete>
+
+    <delete id="deleteCusTMSShippingInfoByIds" parameterType="String">
+        delete from cus_tms_shipping_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

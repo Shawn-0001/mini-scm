@@ -1,31 +1,30 @@
 package com.ruoyi.masterdata.domain;
 
+import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
-import java.math.BigDecimal;
-
 /**
- * 客户主数据对象 cus_master_customer
+ * 供应商主数据对象 cus_master_supplier
  * 
- * @author Shawn
- * @date 2023-11-04
+ * @author shawn
+ * @date 2023-11-05
  */
-public class CusMasterCustomer extends BaseEntity
+public class CusMasterSupplier extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 自增序列 */
     private Long id;
 
-    /** 客户编号 */
-    @Excel(name = "客户编号")
+    /** 供应商编号 */
+    @Excel(name = "供应商编号")
     private String code;
 
-    /** 公司名称 */
-    @Excel(name = "客户名称")
+    /** 供应商名称 */
+    @Excel(name = "供应商名称")
     private String name;
 
     /** 注册城市 */
@@ -90,7 +89,7 @@ public class CusMasterCustomer extends BaseEntity
 
     /** 发票类型 */
     @Excel(name = "发票类型")
-    private Long invoiceType;
+    private String invoiceType;
 
     /** 收件人姓名 */
     @Excel(name = "收件人姓名")
@@ -167,12 +166,12 @@ public class CusMasterCustomer extends BaseEntity
     {
         return legalPerson;
     }
-    public void setRegisteredCapital(BigDecimal registeredCapital)
+    public void setRegisteredCapital(BigDecimal registeredCapital) 
     {
         this.registeredCapital = registeredCapital;
     }
 
-    public BigDecimal getRegisteredCapital()
+    public BigDecimal getRegisteredCapital() 
     {
         return registeredCapital;
     }
@@ -230,12 +229,12 @@ public class CusMasterCustomer extends BaseEntity
     {
         return contactsOfficeLocation;
     }
-    public void setBankName(String bankName)
+    public void setBankName(String bankName) 
     {
         this.bankName = bankName;
     }
 
-    public String getBankName()
+    public String getBankName() 
     {
         return bankName;
     }
@@ -266,12 +265,12 @@ public class CusMasterCustomer extends BaseEntity
     {
         return invoiceAddress;
     }
-    public void setInvoiceType(Long invoiceType) 
+    public void setInvoiceType(String invoiceType) 
     {
         this.invoiceType = invoiceType;
     }
 
-    public Long getInvoiceType() 
+    public String getInvoiceType() 
     {
         return invoiceType;
     }

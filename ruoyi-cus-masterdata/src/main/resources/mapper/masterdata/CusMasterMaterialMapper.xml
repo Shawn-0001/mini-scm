@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, code, name, models, unit, create_by, create_time, update_by, update_time from cus_master_material
     </sql>
 
-<!--    check wether material exists by material code-->
+<!--    check whether material exists by material code-->
     <select id="selectMaterialMasterByCode" parameterType="String" resultMap="CusMasterMaterialResult">
         <include refid="selectCusMasterMaterialVo"/>
         where code = #{code}
@@ -46,20 +46,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null and name != ''">name,</if>
             <if test="models != null and models != ''">models,</if>
             <if test="unit != null and unit != ''">unit,</if>
-            <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+            create_by,
+            create_time
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="code != null and code != ''">#{code},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="models != null and models != ''">#{models},</if>
             <if test="unit != null and unit != ''">#{unit},</if>
-            <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
+            #{createBy},
+            sysdate()
          </trim>
     </insert>
 
@@ -70,10 +66,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="models != null and models != ''">models = #{models},</if>
             <if test="unit != null and unit != ''">unit = #{unit},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
-            <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
+            update_by = #{updateBy},
+            update_time = sysdate()
         </trim>
         where id = #{id}
     </update>

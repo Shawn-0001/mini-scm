@@ -90,6 +90,10 @@
 			margin-left: 1px;
 		}
 	}
+	.el-table__body-wrapper::-webkit-scrollbar{
+		width: 10px;
+		height: 10px;
+	}
 }
 
 /** 表单布局 **/

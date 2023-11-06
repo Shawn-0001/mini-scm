@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.masterdata.mapper.CusMasterWarehouseMapper">
+    
+    <resultMap type="CusMasterWarehouse" id="CusMasterWarehouseResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="region"    column="region"    />
+        <result property="location"    column="location"    />
+        <result property="contactPic"    column="contact_pic"    />
+        <result property="contactPhone1"    column="contact_phone1"    />
+        <result property="contactPhone2"    column="contact_phone2"    />
+        <result property="category"    column="category"    />
+        <result property="area"    column="area"    />
+        <result property="volume"    column="volume"    />
+        <result property="unit"    column="unit"    />
+        <result property="comments"    column="comments"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCusMasterWarehouseVo">
+        select id, code, name, region, location, contact_pic, contact_phone1, contact_phone2, category, area, volume, unit, comments, create_by, create_time, update_by, update_time from cus_master_warehouse
+    </sql>
+
+    <!--    check whether warehouse  exists by  code-->
+    <select id="selectWarehouseMasterByCode" parameterType="String" resultMap="CusMasterWarehouseResult">
+        <include refid="selectCusMasterWarehouseVo"/>
+        where code = #{code}
+    </select>
+
+    <select id="selectCusMasterWarehouseList" parameterType="CusMasterWarehouse" resultMap="CusMasterWarehouseResult">
+        <include refid="selectCusMasterWarehouseVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectCusMasterWarehouseById" parameterType="String" resultMap="CusMasterWarehouseResult">
+        <include refid="selectCusMasterWarehouseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCusMasterWarehouse" parameterType="CusMasterWarehouse">
+        insert into cus_master_warehouse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">code,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="region != null and region != ''">region,</if>
+            <if test="location != null and location != ''">location,</if>
+            <if test="contactPic != null and contactPic != ''">contact_pic,</if>
+            <if test="contactPhone1 != null and contactPhone1 != ''">contact_phone1,</if>
+            <if test="contactPhone2 != null">contact_phone2,</if>
+            <if test="category != null">category,</if>
+            <if test="area != null">area,</if>
+            <if test="volume != null">volume,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="comments != null">comments,</if>
+            create_by,
+            create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">#{code},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="region != null and region != ''">#{region},</if>
+            <if test="location != null and location != ''">#{location},</if>
+            <if test="contactPic != null and contactPic != ''">#{contactPic},</if>
+            <if test="contactPhone1 != null and contactPhone1 != ''">#{contactPhone1},</if>
+            <if test="contactPhone2 != null">#{contactPhone2},</if>
+            <if test="category != null">#{category},</if>
+            <if test="area != null">#{area},</if>
+            <if test="volume != null">#{volume},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="comments != null">#{comments},</if>
+            #{createBy},
+            sysdate()
+         </trim>
+    </insert>
+
+    <update id="updateCusMasterWarehouse" parameterType="CusMasterWarehouse">
+        update cus_master_warehouse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="region != null and region != ''">region = #{region},</if>
+            <if test="location != null and location != ''">location = #{location},</if>
+            <if test="contactPic != null and contactPic != ''">contact_pic = #{contactPic},</if>
+            <if test="contactPhone1 != null and contactPhone1 != ''">contact_phone1 = #{contactPhone1},</if>
+            <if test="contactPhone2 != null">contact_phone2 = #{contactPhone2},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="volume != null">volume = #{volume},</if>
+            <if test="unit != null and unit != ''">unit = #{unit},</if>
+            <if test="comments != null">comments = #{comments},</if>
+            update_by = #{updateBy},
+            update_time = sysdate()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCusMasterWarehouseById" parameterType="String">
+        delete from cus_master_warehouse where id = #{id}
+    </delete>
+
+    <delete id="deleteCusMasterWarehouseByIds" parameterType="String">
+        delete from cus_master_warehouse where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

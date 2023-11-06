@@ -78,13 +78,12 @@ public class CusMasterMaterialController extends BaseController
     public AjaxResult add(@RequestBody CusMasterMaterial cusMasterMaterial)
     {
         String code = cusMasterMaterial.getCode();
-        CusMasterMaterial m = cusMasterMaterialService.selectMaterialMasterByCode(cusMasterMaterial.getCode());
+        CusMasterMaterial m = cusMasterMaterialService.selectMaterialMasterByCode(code);
         if (m != null) {
             return error("物料编码： <" + code + ">  已经存在, 请重新输入！");
         } else {
-            cusMasterMaterial.setUpdateBy(getUsername());
+            cusMasterMaterial.setCreateBy(getUsername());
             cusMasterMaterialService.insertCusMasterMaterial(cusMasterMaterial);
-//            cusMasterMaterialService.insertMaterialSummaries(code);
             return success();
         }
     }
@@ -97,6 +96,7 @@ public class CusMasterMaterialController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody CusMasterMaterial cusMasterMaterial)
     {
+        cusMasterMaterial.setUpdateBy(getUsername());
         return toAjax(cusMasterMaterialService.updateCusMasterMaterial(cusMasterMaterial));
     }
 

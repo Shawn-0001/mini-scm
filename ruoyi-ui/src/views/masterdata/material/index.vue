@@ -33,7 +33,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="materialList" @selection-change="handleSelectionChange">
+    <el-table ref="table" @row-click="handleRowClick"  v-loading="loading" :data="materialList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="自增序列" align="center" prop="id" width="80px" />
       <el-table-column label="物料编码" align="center" prop="code" min-width="150px" />
@@ -44,14 +44,14 @@
         </template>
       </el-table-column>
       <el-table-column label="规格型号" align="center" prop="models" min-width="150px" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100px">
+      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width" min-width="100px">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['masterdata:material:edit']">修改</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
             v-hasPermi="['masterdata:material:remove']">删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
@@ -259,6 +259,10 @@ export default {
       this.download('masterdata/material/export', {
         ...this.queryParams
       }, `material_${new Date().getTime()}.xlsx`)
+    },
+    // handle row click 
+    handleRowClick(row, col, event) {
+      this.$refs.table.toggleRowSelection(row)
     }
   }
 };

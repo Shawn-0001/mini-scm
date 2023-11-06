@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.masterdata.mapper.CusMasterCustomerMapper">
+<mapper namespace="com.ruoyi.masterdata.mapper.CusMasterSupplierMapper">
     
-    <resultMap type="CusMasterCustomer" id="CusMasterCustomerResult">
+    <resultMap type="CusMasterSupplier" id="CusMasterSupplierResult">
         <result property="id"    column="id"    />
         <result property="code"    column="code"    />
         <result property="name"    column="name"    />
@@ -33,31 +33,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
-    <sql id="selectCusMasterCustomerVo">
-        select id, code, name, register_location, location, post_code, legal_person, registered_capital, fax, website, contacts_name, contacts_phone, contacts_email, contacts_office_location, bank_name, bank_account, tax_number, invoice_address, invoice_type, recipient_name, recipient_phone, recipient_address, create_by, create_time, update_by, update_time from cus_master_customer
+    <sql id="selectCusMasterSupplierVo">
+        select id, code, name, register_location, location, post_code, legal_person, registered_capital, fax, website, contacts_name, contacts_phone, contacts_email, contacts_office_location, bank_name, bank_account, tax_number, invoice_address, invoice_type, recipient_name, recipient_phone, recipient_address, create_by, create_time, update_by, update_time from cus_master_supplier
     </sql>
 
-    <!--    check wether customer exists by  code-->
-    <select id="selectCustomerMasterByCode" parameterType="String" resultMap="CusMasterCustomerResult">
-        <include refid="selectCusMasterCustomerVo"/>
+    <!--    check whether supplier exists by  code-->
+    <select id="selectSupplierMasterByCode" parameterType="String" resultMap="CusMasterSupplierResult">
+        <include refid="selectCusMasterSupplierVo"/>
         where code = #{code}
     </select>
 
-    <select id="selectCusMasterCustomerList" parameterType="CusMasterCustomer" resultMap="CusMasterCustomerResult">
-        <include refid="selectCusMasterCustomerVo"/>
+    <select id="selectCusMasterSupplierList" parameterType="CusMasterSupplier" resultMap="CusMasterSupplierResult">
+        <include refid="selectCusMasterSupplierVo"/>
         <where>  
             <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
         </where>
     </select>
     
-    <select id="selectCusMasterCustomerById" parameterType="Long" resultMap="CusMasterCustomerResult">
-        <include refid="selectCusMasterCustomerVo"/>
+    <select id="selectCusMasterSupplierById" parameterType="Long" resultMap="CusMasterSupplierResult">
+        <include refid="selectCusMasterSupplierVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertCusMasterCustomer" parameterType="CusMasterCustomer" useGeneratedKeys="true" keyProperty="id">
-        insert into cus_master_customer
+    <insert id="insertCusMasterSupplier" parameterType="CusMasterSupplier" useGeneratedKeys="true" keyProperty="id">
+        insert into cus_master_supplier
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="code != null and code != ''">code,</if>
             <if test="name != null and name != ''">name,</if>
@@ -72,11 +72,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="contactsPhone != null">contacts_phone,</if>
             <if test="contactsEmail != null">contacts_email,</if>
             <if test="contactsOfficeLocation != null">contacts_office_location,</if>
-            <if test="bankName != null">bank_name,</if>
+            <if test="bankName != null and bankName != ''">bank_name,</if>
             <if test="bankAccount != null and bankAccount != ''">bank_account,</if>
             <if test="taxNumber != null and taxNumber != ''">tax_number,</if>
             <if test="invoiceAddress != null and invoiceAddress != ''">invoice_address,</if>
-            <if test="invoiceType != null">invoice_type,</if>
+            <if test="invoiceType != null and invoiceType != ''">invoice_type,</if>
             <if test="recipientName != null">recipient_name,</if>
             <if test="recipientPhone != null">recipient_phone,</if>
             <if test="recipientAddress != null">recipient_address,</if>
@@ -97,11 +97,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="contactsPhone != null">#{contactsPhone},</if>
             <if test="contactsEmail != null">#{contactsEmail},</if>
             <if test="contactsOfficeLocation != null">#{contactsOfficeLocation},</if>
-            <if test="bankName != null">#{bankName},</if>
+            <if test="bankName != null and bankName != ''">#{bankName},</if>
             <if test="bankAccount != null and bankAccount != ''">#{bankAccount},</if>
             <if test="taxNumber != null and taxNumber != ''">#{taxNumber},</if>
             <if test="invoiceAddress != null and invoiceAddress != ''">#{invoiceAddress},</if>
-            <if test="invoiceType != null">#{invoiceType},</if>
+            <if test="invoiceType != null and invoiceType != ''">#{invoiceType},</if>
             <if test="recipientName != null">#{recipientName},</if>
             <if test="recipientPhone != null">#{recipientPhone},</if>
             <if test="recipientAddress != null">#{recipientAddress},</if>
@@ -110,8 +110,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateCusMasterCustomer" parameterType="CusMasterCustomer">
-        update cus_master_customer
+    <update id="updateCusMasterSupplier" parameterType="CusMasterSupplier">
+        update cus_master_supplier
         <trim prefix="SET" suffixOverrides=",">
             <if test="code != null and code != ''">code = #{code},</if>
             <if test="name != null and name != ''">name = #{name},</if>
@@ -126,11 +126,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="contactsPhone != null">contacts_phone = #{contactsPhone},</if>
             <if test="contactsEmail != null">contacts_email = #{contactsEmail},</if>
             <if test="contactsOfficeLocation != null">contacts_office_location = #{contactsOfficeLocation},</if>
-            <if test="bankName != null">bank_name = #{bankName},</if>
+            <if test="bankName != null and bankName != ''">bank_name = #{bankName},</if>
             <if test="bankAccount != null and bankAccount != ''">bank_account = #{bankAccount},</if>
             <if test="taxNumber != null and taxNumber != ''">tax_number = #{taxNumber},</if>
             <if test="invoiceAddress != null and invoiceAddress != ''">invoice_address = #{invoiceAddress},</if>
-            <if test="invoiceType != null">invoice_type = #{invoiceType},</if>
+            <if test="invoiceType != null and invoiceType != ''">invoice_type = #{invoiceType},</if>
             <if test="recipientName != null">recipient_name = #{recipientName},</if>
             <if test="recipientPhone != null">recipient_phone = #{recipientPhone},</if>
             <if test="recipientAddress != null">recipient_address = #{recipientAddress},</if>
@@ -140,12 +140,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteCusMasterCustomerById" parameterType="Long">
-        delete from cus_master_customer where id = #{id}
+    <delete id="deleteCusMasterSupplierById" parameterType="Long">
+        delete from cus_master_supplier where id = #{id}
     </delete>
 
-    <delete id="deleteCusMasterCustomerByIds" parameterType="String">
-        delete from cus_master_customer where id in 
+    <delete id="deleteCusMasterSupplierByIds" parameterType="String">
+        delete from cus_master_supplier where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
