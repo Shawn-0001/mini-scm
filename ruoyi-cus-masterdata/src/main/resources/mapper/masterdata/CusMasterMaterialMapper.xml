@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectCusMasterMaterialList" parameterType="CusMasterMaterial" resultMap="CusMasterMaterialResult">
         <include refid="selectCusMasterMaterialVo"/>
         <where>
-            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
         </where>
     </select>

@@ -17,6 +17,14 @@ export function getWarehouse(id) {
   })
 }
 
+// 查询仓库主数据详细 by code
+export function getWarehouseByCode(code) {
+  return request({
+    url: '/masterdata/warehouse/code/' + code,
+    method: 'get'
+  })
+}
+
 // 新增仓库主数据
 export function addWarehouse(data) {
   return request({

@@ -59,7 +59,7 @@ public class CusMasterWarehouse extends BaseEntity
     private String volume;
 
     /** 计量单位 */
-    @Excel(name = "计量单位")
+    @Excel(name = "计量单位", dictType = "cus_material_unit")
     private String unit;
 
     /** 备注 */

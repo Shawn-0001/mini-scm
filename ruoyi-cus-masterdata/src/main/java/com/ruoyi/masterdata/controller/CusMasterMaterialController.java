@@ -68,6 +68,16 @@ public class CusMasterMaterialController extends BaseController
     {
         return success(cusMasterMaterialService.selectCusMasterMaterialById(id));
     }
+    /**
+     * 获取物料主数据详细信息 by code
+     */
+    @PreAuthorize("@ss.hasPermi('masterdata:material:query')")
+    @GetMapping(value = "/code/{code}")
+    public AjaxResult getInfoByCode(@PathVariable("code") String code)
+    {
+        return success(cusMasterMaterialService.selectMaterialMasterByCode(code));
+    }
+
 
     /**
      * 新增物料主数据

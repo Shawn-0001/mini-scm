@@ -17,6 +17,14 @@ export function getMaterial(id) {
   })
 }
 
+// 查询物料主数据详细 by code
+export function getMaterialByCode(code) {
+  return request({
+    url: '/masterdata/material/code/' + code,
+    method: 'get'
+  })
+}
+
 // 新增物料主数据
 export function addMaterial(data) {
   return request({

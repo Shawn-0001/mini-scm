@@ -89,7 +89,7 @@ public class CusMasterCustomer extends BaseEntity
     private String invoiceAddress;
 
     /** 发票类型 */
-    @Excel(name = "发票类型")
+    @Excel(name = "发票类型", dictType = "cus_masterdata_invoice_type")
     private Long invoiceType;
 
     /** 收件人姓名 */

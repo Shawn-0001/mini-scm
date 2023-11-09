@@ -68,6 +68,15 @@ public class CusMasterWarehouseController extends BaseController {
     }
 
     /**
+     * 获取仓库主数据详细信息 by code
+     */
+    @PreAuthorize("@ss.hasPermi('masterdata:warehouse:query')")
+    @GetMapping(value = "/code/{code}")
+    public AjaxResult getInfoByCode(@PathVariable("code") String code) {
+        return success(cusMasterWarehouseService.selectWarehouseMasterByCode(code));
+    }
+
+    /**
      * 新增仓库主数据
      */
     @PreAuthorize("@ss.hasPermi('masterdata:warehouse:add')")

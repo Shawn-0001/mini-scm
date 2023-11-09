@@ -11,11 +11,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="batchNumber"    column="batch_number"    />
         <result property="tractorNumber"    column="tractor_number"    />
         <result property="shippingFrom"    column="shipping_from"    />
+        <result property="shippingFromName"    column="shipping_from_name"    />
         <result property="shippingTo"    column="shipping_to"    />
+        <result property="shippingToName"    column="shipping_to_name"    />
         <result property="weight"    column="weight"    />
         <result property="handledBy"    column="handled_by"    />
         <result property="phone"    column="phone"    />
         <result property="materialCode"    column="material_code"    />
+        <result property="materialName"    column="material_name"    />
         <result property="businessDate"    column="business_date"    />
         <result property="unitPrice"    column="unit_price"    />
         <result property="landingWeight"    column="landing_weight"    />
@@ -29,24 +32,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
+<!--    <sql id="selectCusTMSShippingInfoVo">-->
+<!--        select id, shipping_order, shipping_type, batch_number, tractor_number, shipping_from, shipping_to, weight, handled_by, phone, material_code, business_date, unit_price, landing_weight, effective_weight, effective_unit_price, landing_date, status, create_by, create_time, update_by, update_time from cus_tms_shipping_info-->
+<!--    </sql>-->
+
     <sql id="selectCusTMSShippingInfoVo">
-        select id, shipping_order, shipping_type, batch_number, tractor_number, shipping_from, shipping_to, weight, handled_by, phone, material_code, business_date, unit_price, landing_weight, effective_weight, effective_unit_price, landing_date, status, create_by, create_time, update_by, update_time from cus_tms_shipping_info
+        select t.id, t.shipping_order, t.shipping_type, t.batch_number, t.tractor_number, t.shipping_from, w1.shipping_from_name, t.shipping_to, w2.shipping_to_name, t.weight, t.handled_by, t.phone, t.material_code, m.name as material_name, t.business_date, t.unit_price, t.landing_weight, t.effective_weight, t.effective_unit_price, t.landing_date, t.status, t.create_by, t.create_time, t.update_by, t.update_time from cus_tms_shipping_info t , ( SELECT CODE, NAME as shipping_from_name  FROM cus_master_warehouse ) w1, ( SELECT CODE, NAME as shipping_to_name FROM cus_master_warehouse ) w2, cus_master_material m
     </sql>
 
     <select id="selectCusTMSShippingInfoList" parameterType="CusTMSShippingInfo" resultMap="CusTMSShippingInfoResult">
         <include refid="selectCusTMSShippingInfoVo"/>
-        <where>  
-            <if test="shippingOrder != null  and shippingOrder != ''"> and shipping_order like concat('%', #{shippingOrder}, '%')</if>
-            <if test="tractorNumber != null  and tractorNumber != ''"> and tractor_number like concat('%', #{tractorNumber}, '%')</if>
-            <if test="handledBy != null  and handledBy != ''"> and handled_by = #{handledBy}</if>
-            <if test="businessDate != null "> and business_date = #{businessDate}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+        <where>
+            t.shipping_from = w1.code  and t.shipping_to = w2.code and t.material_code = m.code
+            <if test="shippingOrder != null  and shippingOrder != ''"> and t.shipping_order like concat('%', #{shippingOrder}, '%')</if>
+            <if test="tractorNumber != null  and tractorNumber != ''"> and t.tractor_number like concat('%', #{tractorNumber}, '%')</if>
+            <if test="handledBy != null  and handledBy != ''"> and t.handled_by = #{handledBy}</if>
+            <if test="businessDate != null "> and t.business_date = #{businessDate}</if>
+            <if test="status != null  and status != ''"> and t.status = #{status}</if>
         </where>
     </select>
     
     <select id="selectCusTMSShippingInfoById" parameterType="Long" resultMap="CusTMSShippingInfoResult">
         <include refid="selectCusTMSShippingInfoVo"/>
-        where id = #{id}
+        where t.shipping_from = w1.code  and t.shipping_to = w2.code and t.material_code = m.code and t.id = #{id}
     </select>
         
     <insert id="insertCusTMSShippingInfo" parameterType="CusTMSShippingInfo" useGeneratedKeys="true" keyProperty="id">

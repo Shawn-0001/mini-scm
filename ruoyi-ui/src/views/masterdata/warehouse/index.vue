@@ -137,7 +137,6 @@
                 <el-option v-for="dict in dict.type.cus_material_unit" :key="dict.value" :label="dict.label"
                   :value="dict.value"></el-option>
               </el-select>
-              <!-- <el-input v-model="form.unit" placeholder="请输入计量单位" /> -->
             </el-form-item>
           </el-col>
         </el-row>

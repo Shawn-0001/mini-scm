@@ -88,7 +88,7 @@ public class CusMasterSupplier extends BaseEntity
     private String invoiceAddress;
 
     /** 发票类型 */
-    @Excel(name = "发票类型")
+    @Excel(name = "发票类型", dictType = "cus_masterdata_invoice_type")
     private String invoiceType;
 
     /** 收件人姓名 */

@@ -31,7 +31,7 @@ public class CusMasterMaterial extends BaseEntity
     private String models;
 
     /** 计量单位 */
-    @Excel(name = "计量单位")
+    @Excel(name = "计量单位", dictType ="cus_material_unit")
     private String unit;
     public void setId(Long id) 
     {

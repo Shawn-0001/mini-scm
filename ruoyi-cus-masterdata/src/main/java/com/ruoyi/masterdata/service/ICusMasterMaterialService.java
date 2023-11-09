@@ -27,6 +27,7 @@ public interface ICusMasterMaterialService
      */
     public CusMasterMaterial selectMaterialMasterByCode(String code);
 
+
     /**
      * 查询物料主数据列表
      * 

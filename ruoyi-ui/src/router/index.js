@@ -93,6 +93,27 @@ export const constantRoutes = [
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
   {
+    path: '/tms/',
+    component: Layout,
+    hidden: true,
+    permissions: ['tms:shippingInfo:add'],
+    children: [
+      {
+        path: 'newShippingOrder/:shippingOrderId',
+        component: () => import('@/views/tms/shippingInfo/newShippingOrder'),
+        name: 'newShippingOrder',
+        meta: { title: '编辑运单', activeMenu: '/tms/shippingInfo' }
+      },
+      {
+        path: 'shippingOrderDetail/:shippingOrderId',
+        component: () => import('@/views/tms/shippingInfo/shippingOrderDetail'),
+        name: 'shippingOrderDetail',
+        meta: { title: '运单详情', activeMenu: '/tms/shippingInfo' }
+      }
+    ]
+  },
+
+  {
     path: '/system/user-auth',
     component: Layout,
     hidden: true,
