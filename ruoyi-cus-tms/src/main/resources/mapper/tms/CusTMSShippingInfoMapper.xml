@@ -77,10 +77,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="effectiveUnitPrice != null">effective_unit_price,</if>
             <if test="landingDate != null">landing_date,</if>
             <if test="status != null and status != ''">status,</if>
-            <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+            create_by,
+            create_time
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="shippingOrder != null and shippingOrder != ''">#{shippingOrder},</if>
@@ -100,10 +98,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="effectiveUnitPrice != null">#{effectiveUnitPrice},</if>
             <if test="landingDate != null">#{landingDate},</if>
             <if test="status != null and status != ''">#{status},</if>
-            <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
+            #{createBy},
+            sysdate()
          </trim>
     </insert>
 
@@ -127,10 +123,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="effectiveUnitPrice != null">effective_unit_price = #{effectiveUnitPrice},</if>
             <if test="landingDate != null">landing_date = #{landingDate},</if>
             <if test="status != null and status != ''">status = #{status},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
-            <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
+            update_by = #{updateBy},
+            update_time = sysdate()
         </trim>
         where id = #{id}
     </update>

@@ -43,13 +43,17 @@
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
           v-hasPermi="['tms:shippingInfo:export']">导出</el-button>
       </el-col>
+      <el-col :span="1.5">
+        <el-button type="warning" plain icon="el-icon-upload2" size="mini" @click="handleImport"
+          v-hasPermi="['transportdocuments:detail:export']">导入</el-button>
+      </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table ref="table" v-loading="loading" :data="shippingInfoList" @row-click="handleRowClick"
       @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="运单编号" align="center" prop="shippingOrder" min-width="150px" />
+      <el-table-column label="运单编号" align="center" prop="shippingOrder" min-width="180px" />
       <el-table-column label="业务日期" align="center" prop="businessDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.businessDate, '{y}-{m}-{d}') }}</span>
@@ -70,10 +74,10 @@
       <el-table-column label="发货仓库名称" align="center" prop="shippingFromName" show-overflow-tooltip min-width="150px" />
       <el-table-column label="卸货仓库" align="center" prop="shippingTo" show-overflow-tooltip min-width="150px" />
       <el-table-column label="卸货仓库名称" align="center" prop="shippingToName" min-width="150px" />
-      <el-table-column label="重量" align="center" prop="weight" min-width="50px" />
-      <el-table-column label="类型" align="center" prop="shippingType" min-width="50px" />
+      <el-table-column label="重量" align="center" prop="weight" min-width="100px" />
+      <el-table-column label="类型" align="center" prop="shippingType" min-width="100px" />
       <el-table-column label="单价" align="center" prop="unitPrice" min-width="100px" />
-      <el-table-column label="卸货日期" align="center" prop="landingDate" width="180">
+      <el-table-column label="卸货日期" align="center" prop="landingDate" width="180px">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.landingDate, '{y}-{m}-{d}') }}</span>
         </template>
@@ -81,23 +85,36 @@
       <el-table-column label="卸货重量" align="center" prop="landingWeight" min-width="100px" />
       <el-table-column label="核算重量" align="center" prop="effectiveWeight" min-width="100px" />
       <el-table-column label="核算单价" align="center" prop="effectiveUnitPrice" min-width="100px" />
-      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-            v-hasPermi="['tms:shippingInfo:edit']">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['tms:shippingInfo:remove']">删除</el-button>
-        </template>
-      </el-table-column> -->
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
+
+    <!-- 运输单导入对话框 -->
+    <el-dialog v-dialog-drag :title="upload.title" :visible.sync="upload.open" width="400px" :close-on-click-modal="false"
+      append-to-body>
+      <el-upload ref="upload" :limit="1" accept=".xlsx, .xls" :headers="upload.headers"
+        :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip text-center" slot="tip">
+          <span>仅允许导入xls、xlsx格式文件。</span>
+          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;"
+            @click="importTemplate">下载模板</el-link>
+        </div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileForm">确 定</el-button>
+        <el-button @click="upload.open = false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { listShippingInfo, getShippingInfo, delShippingInfo, addShippingInfo, updateShippingInfo } from "@/api/tms/shippingInfo";
+import { getToken } from "@/utils/auth";
 
 export default {
   name: "ShippingInfo",
@@ -120,8 +137,20 @@ export default {
       shippingInfoList: [],
       // 弹出层标题
       title: "",
-      // 是否显示弹出层
-      open: false,
+      upload: {
+        // 是否显示弹出层
+        open: false,
+        // 弹出层标题
+        title: "",
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: "Bearer " + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/tms/shippingInfo/import"
+      },
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -165,13 +194,13 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      let shippingOrderId = 'null'
-      this.$router.push('/tms/shippingInfo/newShippingOrder/' + shippingOrderId)
+      // let shippingOrderId = 'null'
+      this.$router.push('/tms/newShippingOrder/')
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       const shippingOrderId = row.id || this.ids;
-      this.$router.push('/tms/shippingInfo/newShippingOrder/' + shippingOrderId)
+      this.$router.push('/tms/newShippingOrder/' + shippingOrderId)
     },
     /** 删除按钮操作 */
     handleDelete(row) {
@@ -192,7 +221,34 @@ export default {
     // handle row click 
     handleRowClick(row, col, event) {
       this.$refs.table.toggleRowSelection(row)
-    }
+    },
+
+    /** 导入按钮操作 */
+    handleImport() {
+      this.upload.title = "导入运单";
+      this.upload.open = true;
+    },
+    /** 下载模板操作 */
+    importTemplate() {
+      this.download('/tms/shippingInfo/template', {}, `运单导入模板_${new Date().getTime()}.xlsx`)
+    },
+    /** 文件上传中处理 */
+    handleFileUploadProgress(event, file, fileList) {
+      this.upload.isUploading = true;
+    },
+    /** 文件上传成功处理 */
+    handleFileSuccess(response, file, fileList) {
+      this.upload.open = false;
+      this.upload.isUploading = false;
+      this.$refs.upload.clearFiles();
+      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+      this.getList();
+    },
+    // 
+    /** 提交上传文件 */
+    submitFileForm() {
+      this.$refs.upload.submit();
+    },
   }
 };
 </script>

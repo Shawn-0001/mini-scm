@@ -152,7 +152,7 @@
 </template>
 
 <script>
-import { getShippingInfo, addShippingInfo, updateShippingInfo } from "@/api/tms/shippingInfo";
+import { getShippingInfo, getShippingNumber, addShippingInfo, updateShippingInfo } from "@/api/tms/shippingInfo";
 import { listMaterial, getMaterialByCode } from "@/api/masterdata/material"
 import { listWarehouse, getWarehouseByCode } from "@/api/masterdata/warehouse"
 
@@ -220,11 +220,14 @@ export default {
         this.shippingTo = response.data.shippingToName
       })
     } else {
-      // set the default date
-      this.buttonFlag = true
-      // this.form.status = 10
-      this.$set(this.form, 'shippingOrder', new Date().getTime())
-      this.$set(this.form, 'businessDate', new Date())
+      // get shipping  number
+      getShippingNumber().then(res => {
+        // set the default date
+        this.buttonFlag = true
+        // this.form.status = 10
+        this.$set(this.form, 'shippingOrder', res.shippingNumber)
+        this.$set(this.form, 'businessDate', new Date())
+      })
     }
   },
   methods: {
@@ -237,7 +240,7 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        shippingOrder: null,
+        // shippingOrder: null,
         shippingType: null,
         batchNumber: null,
         tractorNumber: null,
@@ -266,8 +269,9 @@ export default {
             updateShippingInfo(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               const shippingOrderId = this.form.shippingOrderId;
-              this.$store.dispatch('tagsView/delView', this.$route)              
-              this.$router.push('/tms/shippingInfo/shippingOrderDetail/' + shippingOrderId)
+              this.$store.dispatch('tagsView/delView', this.$route)
+              // this.$router.push('/tms/shippingOrderDetail/' + shippingOrderId)
+              this.$router.push('/tms/shippingInfo')
             })
               .then(
                 this.$modal.closeLoading()

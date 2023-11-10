@@ -93,7 +93,7 @@ export const constantRoutes = [
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
   {
-    path: '/tms/',
+    path: '/tms',
     component: Layout,
     hidden: true,
     permissions: ['tms:shippingInfo:add'],

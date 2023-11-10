@@ -1,19 +1,19 @@
 package com.ruoyi.tms.service;
 
 import java.util.List;
+
 import com.ruoyi.tms.domain.CusTMSShippingInfo;
 
 /**
  * 运单详细信息Service接口
- * 
+ *
  * @author shawn
  * @date 2023-11-06
  */
-public interface ICusTMSShippingInfoService 
-{
+public interface ICusTMSShippingInfoService {
     /**
      * 查询运单详细信息
-     * 
+     *
      * @param id 运单详细信息主键
      * @return 运单详细信息
      */
@@ -21,7 +21,7 @@ public interface ICusTMSShippingInfoService
 
     /**
      * 查询运单详细信息列表
-     * 
+     *
      * @param cusTMSShippingInfo 运单详细信息
      * @return 运单详细信息集合
      */
@@ -29,7 +29,7 @@ public interface ICusTMSShippingInfoService
 
     /**
      * 新增运单详细信息
-     * 
+     *
      * @param cusTMSShippingInfo 运单详细信息
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface ICusTMSShippingInfoService
 
     /**
      * 修改运单详细信息
-     * 
+     *
      * @param cusTMSShippingInfo 运单详细信息
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface ICusTMSShippingInfoService
 
     /**
      * 批量删除运单详细信息
-     * 
+     *
      * @param ids 需要删除的运单详细信息主键集合
      * @return 结果
      */
@@ -53,9 +53,19 @@ public interface ICusTMSShippingInfoService
 
     /**
      * 删除运单详细信息信息
-     * 
+     *
      * @param id 运单详细信息主键
      * @return 结果
      */
     public int deleteCusTMSShippingInfoById(Long id);
+
+    /**
+     * 导入运输单数据
+     *
+     * @param shippingInfoList 运输单数据列表
+     * @param isUpdateSupport  是否更新支持，如果已存在，则进行更新数据
+     * @param operName         操作用户
+     * @return 结果
+     */
+    public String importShippingInfo(List<CusTMSShippingInfo> shippingInfoList, Boolean isUpdateSupport, String operName);
 }

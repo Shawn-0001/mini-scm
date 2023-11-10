@@ -48,9 +48,21 @@ public class CusTMSShippingInfo extends BaseEntity {
     private String tractorNumber;
 
     /**
+     * 物料编码
+     */
+    @Excel(name = "物料编码")
+    private String materialCode;
+
+    /**
+     * 物料名称
+     */
+    @Excel(name = "物料名称")
+    private String materialName;
+
+    /**
      * 发货仓库
      */
-    @Excel(name = "发货仓库")
+    @Excel(name = "发货仓库编码")
     private String shippingFrom;
 
     /**
@@ -62,7 +74,7 @@ public class CusTMSShippingInfo extends BaseEntity {
     /**
      * 卸货仓库
      */
-    @Excel(name = "卸货仓库")
+    @Excel(name = "卸货仓库编码")
     private String shippingTo;
 
     /**
@@ -88,18 +100,6 @@ public class CusTMSShippingInfo extends BaseEntity {
      */
     @Excel(name = "联系电话")
     private String phone;
-
-    /**
-     * 物料编号
-     */
-    @Excel(name = "物料编号")
-    private String materialCode;
-
-    /**
-     * 物料名称
-     */
-    @Excel(name = "物料名称")
-    private String materialName;
 
     /**
      * 业务日期

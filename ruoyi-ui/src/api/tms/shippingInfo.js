@@ -42,3 +42,11 @@ export function delShippingInfo(id) {
     method: 'delete'
   })
 }
+
+// 获取运单编码
+export function getShippingNumber() {
+  return request({
+    url: '/tms/shippingInfo/getShippingNumber',
+    method: 'get'
+  })
+}
