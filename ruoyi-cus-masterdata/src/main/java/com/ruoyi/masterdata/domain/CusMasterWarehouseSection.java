@@ -6,32 +6,32 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 仓库主数据对象 cus_master_warehouse
- *
- * @author shawn
- * @date 2023-11-05
+ * 库区信息对象 cus_master_warehouse_section
+ * 
+ * @author Shawn
+ * @date 2023-11-13
  */
-public class CusMasterWarehouse extends BaseEntity
+public class CusMasterWarehouseSection extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 自增序列 */
-    private String id;
+    private Long id;
+
+    /** 库区编码 */
+    @Excel(name = "库区编码")
+    private String code;
+
+    /** 库区名称 */
+    @Excel(name = "库区名称")
+    private String name;
 
     /** 仓库编码 */
     @Excel(name = "仓库编码")
-    private String code;
+    private String warehouseCode;
 
-    /** 仓库名称 */
-    @Excel(name = "仓库名称")
-    private String name;
-
-    /** 行政区域 */
-    @Excel(name = "行政区域")
-    private String region;
-
-    /** 仓库地址 */
-    @Excel(name = "仓库地址")
+    /** 库区地址 */
+    @Excel(name = "库区地址")
     private String location;
 
     /** 管理人员 */
@@ -46,8 +46,8 @@ public class CusMasterWarehouse extends BaseEntity
     @Excel(name = "联系方式2")
     private String contactPhone2;
 
-    /** 仓库类别 */
-    @Excel(name = "仓库类别")
+    /** 库区类别 */
+    @Excel(name = "库区类别")
     private String category;
 
     /** 占地面积 */
@@ -59,128 +59,127 @@ public class CusMasterWarehouse extends BaseEntity
     private String volume;
 
     /** 计量单位 */
-    @Excel(name = "计量单位", dictType = "cus_material_unit")
+    @Excel(name = "计量单位")
     private String unit;
 
     /** 备注 */
     @Excel(name = "备注")
     private String comments;
 
-    public void setId(String id)
+    public void setId(Long id) 
     {
         this.id = id;
     }
 
-    public String getId()
+    public Long getId() 
     {
         return id;
     }
-    public void setCode(String code)
+    public void setCode(String code) 
     {
         this.code = code;
     }
 
-    public String getCode()
+    public String getCode() 
     {
         return code;
     }
-    public void setName(String name)
+    public void setName(String name) 
     {
         this.name = name;
     }
 
-    public String getName()
+    public String getName() 
     {
         return name;
     }
-
-    public void setRegion(String region)
+    public void setWarehouseCode(String warehouseCode) 
     {
-        this.region = region;
+        this.warehouseCode = warehouseCode;
     }
 
-    public String getRegion()
+    public String getWarehouseCode() 
     {
-        return region;
+        return warehouseCode;
     }
-    public void setLocation(String location)
+    public void setLocation(String location) 
     {
         this.location = location;
     }
 
-    public String getLocation()
+    public String getLocation() 
     {
         return location;
     }
-    public void setContactPic(String contactPic)
+    public void setContactPic(String contactPic) 
     {
         this.contactPic = contactPic;
     }
 
-    public String getContactPic()
+    public String getContactPic() 
     {
         return contactPic;
     }
-    public void setContactPhone1(String contactPhone1)
+    public void setContactPhone1(String contactPhone1) 
     {
         this.contactPhone1 = contactPhone1;
     }
 
-    public String getContactPhone1()
+    public String getContactPhone1() 
     {
         return contactPhone1;
     }
-    public void setContactPhone2(String contactPhone2)
+    public void setContactPhone2(String contactPhone2) 
     {
         this.contactPhone2 = contactPhone2;
     }
 
-    public String getContactPhone2()
+    public String getContactPhone2() 
     {
         return contactPhone2;
     }
-    public void setCategory(String category)
+    public void setCategory(String category) 
     {
         this.category = category;
     }
 
-    public String getCategory()
+    public String getCategory() 
     {
         return category;
     }
-    public void setArea(String area)
+    public void setArea(String area) 
     {
         this.area = area;
     }
 
-    public String getArea()
+    public String getArea() 
     {
         return area;
     }
-    public void setVolume(String volume)
+    public void setVolume(String volume) 
     {
         this.volume = volume;
     }
 
-    public String getVolume()
+    public String getVolume() 
     {
         return volume;
     }
-    public void setUnit(String unit)
+    public void setUnit(String unit) 
     {
         this.unit = unit;
     }
 
-    public String getUnit()
+    public String getUnit() 
     {
         return unit;
     }
-    public void setComments(String comments)
+    public void setComments(String comments) 
     {
         this.comments = comments;
     }
 
-    public String getComments()
+    public String getComments() 
     {
         return comments;
     }
@@ -191,7 +190,7 @@ public class CusMasterWarehouse extends BaseEntity
             .append("id", getId())
             .append("code", getCode())
             .append("name", getName())
-            .append("region", getRegion())
+            .append("warehouseCode", getWarehouseCode())
             .append("location", getLocation())
             .append("contactPic", getContactPic())
             .append("contactPhone1", getContactPhone1())

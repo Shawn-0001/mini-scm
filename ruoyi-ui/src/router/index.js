@@ -112,7 +112,20 @@ export const dynamicRoutes = [
       }
     ]
   },
-
+  {
+    path: '/masterdata/warehouse-section',
+    component: Layout,
+    hidden: true,
+    permissions: ['masterdata:warehouse:list'],
+    children: [
+      {
+        path: 'section/:warehouseCode',
+        component: () => import('@/views/masterdata/warehouse/section'),
+        name: 'WarehouseSection',
+        meta: { title: '库区信息', activeMenu: '/masterdata/warehouse' }
+      }
+    ]
+  },
   {
     path: '/system/user-auth',
     component: Layout,

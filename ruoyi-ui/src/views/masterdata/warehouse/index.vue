@@ -33,22 +33,31 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table ref="table" @row-click="handleRowClick" v-loading="loading" :data="warehouseList" @selection-change="handleSelectionChange">
+    <el-table ref="table" @row-click="handleRowClick" v-loading="loading" :data="warehouseList"
+      @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="仓库编码" align="center" prop="code" min-width="80px"/>
-      <el-table-column label="仓库名称" align="center" prop="name" min-width="100px"/>
+      <el-table-column label="仓库编码" align="center" prop="code" min-width="80px" />
+      <el-table-column label="仓库名称" align="center" prop="name" min-width="100px" />
+      <el-table-column label="库区维护" align="center" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <router-link :to="'/masterdata/warehouse-section/section/' + scope.row.code" class="link-type">
+            <!-- <span>{{ scope.row.code }}</span> -->
+            <span>库区维护</span>
+          </router-link>
+        </template>
+      </el-table-column>
       <el-table-column label="行政区域" align="center" prop="region" :show-overflow-tooltip="true" min-width="150px">
         <template slot-scope="scope">
           {{ parseregion(scope.row.region) }}
         </template>
       </el-table-column>
-      <el-table-column label="仓库地址" align="center" prop="location" :show-overflow-tooltip="true" min-width="120px"/>
-      <el-table-column label="管理人员" align="center" prop="contactPic" min-width="80px"/>
-      <el-table-column label="联系方式1" align="center" prop="contactPhone1" min-width="80px"/>
-      <el-table-column label="联系方式2" align="center" prop="contactPhone2" min-width="80px"/>
-      <el-table-column label="仓库类别" align="center" prop="category" min-width="80px"/>
+      <el-table-column label="仓库地址" align="center" prop="location" :show-overflow-tooltip="true" min-width="120px" />
+      <el-table-column label="管理人员" align="center" prop="contactPic" min-width="80px" />
+      <el-table-column label="联系方式1" align="center" prop="contactPhone1" min-width="80px" />
+      <el-table-column label="联系方式2" align="center" prop="contactPhone2" min-width="80px" />
+      <el-table-column label="仓库类别" align="center" prop="category" min-width="80px" />
       <el-table-column label="占地面积" align="center" prop="area" min-width="80px" />
-      <el-table-column label="最大容量" align="center" prop="volume" min-width="80px"/>
+      <el-table-column label="最大容量" align="center" prop="volume" min-width="80px" />
       <el-table-column label="计量单位" align="center" prop="unit" min-width="80px">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.cus_material_unit" :value="scope.row.unit" />
@@ -73,9 +82,16 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="10" class="mb8">
           <el-col :span="4">
-            <el-form-item label="仓库编码" prop="code">
-              <el-input v-model="form.code" placeholder="请输入仓库编码" />
-            </el-form-item>
+            <div v-if="title === '添加仓库主数据'">
+              <el-form-item label="仓库编码" prop="code">
+                <el-input v-model="form.code" placeholder="请输入仓库编码" />
+              </el-form-item>
+            </div>
+            <div v-else>
+              <el-form-item label="仓库编码" prop="code">
+                {{ form.code }}
+              </el-form-item>
+            </div>
           </el-col>
           <el-col :span="5">
             <el-form-item label="仓库名称" prop="name">
@@ -356,7 +372,7 @@ export default {
       }
     },
     // handle row click 
-    handleRowClick(row, col, event){
+    handleRowClick(row, col, event) {
       this.$refs.table.toggleRowSelection(row)
     }
   }
