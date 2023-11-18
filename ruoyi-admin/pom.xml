@@ -73,6 +73,12 @@
             <artifactId>ruoyi-cus-tms</artifactId>
         </dependency>
 
+        <!-- 订单管理-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-cus-oms</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

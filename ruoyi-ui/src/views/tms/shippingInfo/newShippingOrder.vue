@@ -234,7 +234,7 @@ export default {
     // 取消按钮
     cancel() {
       this.$store.dispatch('tagsView/delView', this.$route)
-      this.$router.push('/tms/shippingInfo')
+      this.$router.push('/tms')
       // this.$router.go(-1)
     },
     // 表单重置
@@ -271,7 +271,7 @@ export default {
               const shippingOrderId = this.form.shippingOrderId;
               this.$store.dispatch('tagsView/delView', this.$route)
               // this.$router.push('/tms/shippingOrderDetail/' + shippingOrderId)
-              this.$router.push('/tms/shippingInfo')
+              this.$router.push('/tms/')
             })
               .then(
                 this.$modal.closeLoading()

@@ -127,6 +127,26 @@ export const dynamicRoutes = [
     ]
   },
   {
+    path: '/oms',
+    component: Layout,
+    hidden: true,
+    permissions: ['oms:po:list'],
+    children: [
+      {
+        path: 'po/add',
+        component: () => import('@/views/oms/po/add'),
+        name: 'addPO',
+        meta: { title: '新增采购订单', activeMenu: '/oms/po' }
+      },
+      {
+        path: 'po/edit/:poId(\\d+)',
+        component: () => import('@/views/oms/po/edit'),
+        name: 'editPO',
+        meta: { title: '编辑采购订单', activeMenu: '/oms/po' }
+      }
+    ]
+  },
+  {
     path: '/system/user-auth',
     component: Layout,
     hidden: true,

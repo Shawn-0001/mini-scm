@@ -38,7 +38,6 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="库区编码" align="center" prop="code" />
       <el-table-column label="库区名称" align="center" prop="name" />
-      <!-- <el-table-column label="仓库编码" align="center" prop="warehouseCode" /> -->
       <el-table-column label="计量单位" align="center" prop="unit" />
       <el-table-column label="库区地址" align="center" prop="location" />
       <el-table-column label="管理人员" align="center" prop="contactPic" />
@@ -48,24 +47,6 @@
       <el-table-column label="占地面积" align="center" prop="area" />
       <el-table-column label="最大容量" align="center" prop="volume" />
       <el-table-column label="备注" align="center" prop="comments" />
-      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['masterdata:warehouseSection:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['masterdata:warehouseSection:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column> -->
     </el-table>
 
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
@@ -88,9 +69,6 @@
         <el-form-item label="库区名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入库区名称" />
         </el-form-item>
-        <!-- <el-form-item label="仓库编码" prop="warehouseCode">
-          <el-input v-model="form.warehouseCode" placeholder="请输入仓库编码" />
-        </el-form-item> -->
         <el-form-item label="库区地址" prop="location">
           <el-input v-model="form.location" placeholder="请输入库区地址" />
         </el-form-item>
@@ -170,9 +148,6 @@ export default {
         name: [
           { required: true, message: "库区名称不能为空", trigger: "blur" }
         ],
-        // warehouseCode: [
-        //   { required: true, message: "仓库编码不能为空", trigger: "blur" }
-        // ],
         location: [
           { required: true, message: "库区地址不能为空", trigger: "blur" }
         ],
@@ -224,11 +199,7 @@ export default {
         area: null,
         volume: null,
         unit: null,
-        comments: null,
-        createBy: null,
-        createTime: null,
-        updateBy: null,
-        updateTime: null
+        comments: null
       };
       this.resetForm("form");
     },
@@ -298,7 +269,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('masterdata/warehouseSection/export', {
+      this.download('masterdata/warehouse/section/export', {
         ...this.queryParams
       }, `warehouseSection_${new Date().getTime()}.xlsx`)
     },
