@@ -67,4 +67,20 @@ public interface ICusMasterMaterialService
      * @return 结果
      */
     public int deleteCusMasterMaterialById(Long id);
+
+    /**
+     * 根据导入物料名称，取得物料编码
+     *
+     * @param materialNames 需要取得的物料名称集合
+     * @return 主数据管理集合
+     */
+    public List<CusMasterMaterial> getMaterialIds(String[] materialNames);
+
+    /**
+     * 查询主数据管理
+     *
+     * @param materialId 主数据管理主键
+     * @return 主数据管理
+     */
+    public CusMasterMaterial selectMasterDataMaterialInfoByMaterialId(String materialId);
 }

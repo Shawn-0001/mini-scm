@@ -150,4 +150,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <!-- 根据导入客户名称，取得客户编码 -->
+    <select id="getClientIds" parameterType="String" resultMap="CusMasterCustomerResult">
+        select base_id, company_name from master_data_client_info where company_name in
+        <foreach item="companyName" collection="array" open="(" separator="," close=")">
+            #{companyName}
+        </foreach>
+    </select>
 </mapper>

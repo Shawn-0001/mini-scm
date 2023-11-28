@@ -105,4 +105,26 @@ public class CusMasterMaterialServiceImpl implements ICusMasterMaterialService
     {
         return cusMasterMaterialMapper.deleteCusMasterMaterialById(id);
     }
+
+    /**
+     * 根据导入物料名称，取得物料编码
+     *
+     * @param materialNames 需要取得的物料名称集合
+     * @return 主数据管理集合
+     */
+    public List<CusMasterMaterial> getMaterialIds(String[] materialNames) {
+        return cusMasterMaterialMapper.getMaterialIds(materialNames);
+    }
+
+    /**
+     * 查询主数据管理
+     *
+     * @param materialId 主数据管理主键
+     * @return 主数据管理
+     */
+    @Override
+    public CusMasterMaterial selectMasterDataMaterialInfoByMaterialId(String materialId)
+    {
+        return cusMasterMaterialMapper.selectMasterDataMaterialInfoByMaterialId(materialId);
+    }
 }

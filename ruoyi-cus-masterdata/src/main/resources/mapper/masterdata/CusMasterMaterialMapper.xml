@@ -82,4 +82,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <!-- 根据导入物料名称，取得物料编码 -->
+    <select id="getMaterialIds" parameterType="String" resultMap="CusMasterMaterialResult">
+        select material_id, material_name from master_data_material_info where material_name in
+        <foreach item="materialName" collection="array" open="(" separator="," close=")">
+            #{materialName}
+        </foreach>
+    </select>
+
+    <select id="selectMasterDataMaterialInfoByMaterialId" parameterType="String" resultMap="CusMasterMaterialResult">
+        <include refid="selectCusMasterMaterialVo"/>
+        where material_id = #{materialId}
+    </select>
 </mapper>

@@ -191,6 +191,13 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 合同管理 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-cus-contract</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -204,6 +211,7 @@
         <module>ruoyi-cus-masterdata</module>
         <module>ruoyi-cus-tms</module>
         <module>ruoyi-cus-oms</module>
+        <module>ruoyi-cus-contract</module>
     </modules>
     <packaging>pom</packaging>
 

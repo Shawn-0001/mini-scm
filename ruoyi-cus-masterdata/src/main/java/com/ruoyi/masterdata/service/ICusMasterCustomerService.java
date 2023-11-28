@@ -67,4 +67,12 @@ public interface ICusMasterCustomerService
      * @return 结果
      */
     public int deleteCusMasterCustomerById(Long id);
+
+    /**
+     * 根据导入物料名称，取得物料编码
+     *
+     * @param companyNames 需要取得的物料名称集合
+     * @return 主数据管理集合
+     */
+    public List<CusMasterCustomer> getClientIds(String[] companyNames);
 }

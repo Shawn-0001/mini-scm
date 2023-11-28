@@ -79,6 +79,12 @@
             <artifactId>ruoyi-cus-oms</artifactId>
         </dependency>
 
+        <!-- 合同管理 -->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-cus-contract</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
