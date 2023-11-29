@@ -785,8 +785,8 @@ public class ContractContentInfoServiceImpl implements IContractContentInfoServi
         purchaseInfo.setDepartment(String.valueOf(SecurityUtils.getDeptId()));
         // 业务日期 -> 签约日期
         purchaseInfo.setBusinessDate(contractInfo.getSignDate());
-        // 物料名称 -> 货物名称
-        purchaseInfo.setMaterialName(contractInfo.getGoodsName());
+        // 物料编码 -> 货物名称
+        purchaseInfo.setmaterialCode(contractInfo.getGoodsName());
         // 采购数量 -> 合同数量
         if (StringUtils.isNotBlank(contractInfo.getContractQuantity())) {
             purchaseInfo.setQuantity(new BigDecimal(contractInfo.getContractQuantity()));

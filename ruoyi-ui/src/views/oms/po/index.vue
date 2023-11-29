@@ -13,8 +13,8 @@
         <el-input v-model="queryParams.handledBy" placeholder="请输入经办人" clearable @keyup.enter.native="handleQuery"
           style="width:150px" />
       </el-form-item>
-      <el-form-item label="物料名称" prop="materialName">
-        <el-input v-model="queryParams.materialName" placeholder="请输入物料名称" clearable @keyup.enter.native="handleQuery"
+      <el-form-item label="物料编码" prop="materialCode">
+        <el-input v-model="queryParams.materialCode" placeholder="请输入物料编码" clearable @keyup.enter.native="handleQuery"
           style="width:150px" />
       </el-form-item>
       <el-form-item label="供应商代码" prop="supplierCode">
@@ -61,7 +61,7 @@
           <span>{{ parseTime(scope.row.businessDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="物料名称" align="center" prop="materialName" />
+      <el-table-column label="物料编码" align="center" prop="materialCode" />
       <el-table-column label="采购数量" align="center" prop="quantity" />
       <el-table-column label="采购单价" align="center" prop="unitPrice" />
       <el-table-column label="供应商代码" align="center" prop="supplierCode" />
@@ -106,32 +106,9 @@ export default {
         type: null,
         contractId: null,
         handledBy: null,
-        materialName: null,
+        materialCode: null,
         supplierCode: null,
       },
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {
-        orderNumber: [
-          { required: true, message: "订单编号不能为空", trigger: "blur" }
-        ],
-        type: [
-          { required: true, message: "订单类型不能为空", trigger: "change" }
-        ],
-        materialName: [
-          { required: true, message: "物料名称不能为空", trigger: "blur" }
-        ],
-        quantity: [
-          { required: true, message: "采购数量不能为空", trigger: "blur" }
-        ],
-        unitPrice: [
-          { required: true, message: "采购单价不能为空", trigger: "blur" }
-        ],
-        supplierCode: [
-          { required: true, message: "供应商代码不能为空", trigger: "blur" }
-        ],
-      }
     };
   },
   created() {

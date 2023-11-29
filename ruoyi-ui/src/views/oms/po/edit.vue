@@ -37,8 +37,13 @@
       <el-divider content-position="left"> 物料信息 </el-divider>
       <el-row :gutter="10" class="mb8">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
-          <el-form-item label="物料名称" prop="materialName">
-            <el-input v-model="form.materialName" placeholder="请输入物料名称" />
+          <el-form-item label="物料编码" prop="materialCode">
+            <el-input v-model="form.materialCode" placeholder="请输入物料编码" />
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
+          <el-form-item label="物料名称：" prop="materialName" style="margin-left: 20px;">
+            {{ materialName }}
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
@@ -124,9 +129,10 @@
 </template>
 
 <script>
-import { addPo, updatePo, getPo} from "@/api/oms/po";
+import { addPo, updatePo, getPo } from "@/api/oms/po";
 import { listDept } from "@/api/system/dept"
-import { listSupplier } from "@/api/masterdata/supplier"
+import { listSupplier, getSupplierByCode } from "@/api/masterdata/supplier"
+import { getMaterialByCode } from "@/api/masterdata/material"
 
 export default {
   name: "editPO",
@@ -139,6 +145,8 @@ export default {
       deptOptions: [],
       // 供应商名称选择用
       supplierName: '',
+      // 选择物料用
+      materialName: '',
       remoteLoadingSupplier: true,
       querySupplier: {
         pageNum: 1,
@@ -190,9 +198,14 @@ export default {
     if (poId != null && poId != '' && poId != 'null') {
       getPo(poId).then(response => {
         this.form = response.data;
-        // this.materialName = response.data.materialName
-        // this.shippingFrom = response.data.shippingFromName
-        // this.shippingTo = response.data.shippingToName
+        let supplierCode = response.data.supplierCode
+        let materialCode = response.data.materialCode
+        getSupplierByCode(supplierCode).then( res => {
+          this.supplierName = res.data.name
+        })
+        getMaterialByCode(materialCode).then( res => {
+          this.materialName = res.data.name
+        })
       })
     }
   },
@@ -233,7 +246,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.orderNumber != ''&& this.form.orderNumber != undefined) {
+          if (this.form.orderNumber != '' && this.form.orderNumber != undefined) {
             updatePo(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               // TO DO , show order detail

@@ -71,6 +71,16 @@ public class CusMasterSupplierController extends BaseController
     }
 
     /**
+     * 根据供应商代码获取供应商主数据详细信息
+     */
+    @PreAuthorize("@ss.hasPermi('masterdata:supplier:query')")
+    @GetMapping(value = "/code/{code}")
+    public AjaxResult getInfoByCode(@PathVariable("code") String code)
+    {
+        return success(cusMasterSupplierService.selectSupplierMasterByCode(code));
+    }
+
+    /**
      * 新增供应商主数据
      */
     @PreAuthorize("@ss.hasPermi('masterdata:supplier:add')")

@@ -67,10 +67,10 @@ public class CusOmsPO extends BaseEntity {
     private Date businessDate;
 
     /**
-     * 物料名称
+     * 物料编码
      */
-    @Excel(name = "物料名称")
-    private String materialName;
+    @Excel(name = "物料编码")
+    private String materialCode;
 
     @Excel(name = "计量单位", dictType = "cus_material_unit")
     private String unit;
@@ -164,12 +164,12 @@ public class CusOmsPO extends BaseEntity {
         return businessDate;
     }
 
-    public void setMaterialName(String materialName) {
-        this.materialName = materialName;
+    public void setmaterialCode(String materialCode) {
+        this.materialCode = materialCode;
     }
 
-    public String getMaterialName() {
-        return materialName;
+    public String getmaterialCode() {
+        return materialCode;
     }
 
     public void setQuantity(BigDecimal quantity) {
@@ -223,7 +223,7 @@ public class CusOmsPO extends BaseEntity {
                 .append("handledBy", getHandledBy())
                 .append("department", getDepartment())
                 .append("businessDate", getBusinessDate())
-                .append("materialName", getMaterialName())
+                .append("materialCode", getmaterialCode())
                 .append("unit",getUnit())
                 .append("quantity", getQuantity())
                 .append("unitPrice", getUnitPrice())

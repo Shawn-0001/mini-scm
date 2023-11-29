@@ -10,12 +10,12 @@ export function listSupplier(query) {
 }
 
 // 查询供应商 by code
-// export function getSupplierByCode(code) {
-//   return request({
-//     url: '/masterdata/supplier/code/' + code,
-//     method: 'get'
-//   })
-// }
+export function getSupplierByCode(code) {
+  return request({
+    url: '/masterdata/supplier/code/' + code,
+    method: 'get'
+  })
+}
 
 // 查询供应商主数据详细
 export function getSupplier(id) {
