@@ -471,7 +471,7 @@ public class ContractContentInfoServiceImpl implements IContractContentInfoServi
                     new com.aliyun.dingtalkworkflow_1_0.models
                             .ListProcessInstanceIdsRequest()
                             .setProcessCode(processCode)
-                            .setStartTime(1669824000000L) // 2022-12-01 00:00:00------至今
+                            .setStartTime(1693497600000L) // 2023-09-01 00:00:00------至今
                             .setNextToken(nextToken)
                             .setMaxResults(20L);
             try {
