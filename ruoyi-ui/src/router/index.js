@@ -127,22 +127,42 @@ export const dynamicRoutes = [
     ]
   },
   {
-    path: '/oms',
+    path: '/oms/po',
     component: Layout,
     hidden: true,
-    permissions: ['oms:po:list'],
+    permissions: ['oms:po:query'],
     children: [
       {
-        path: 'po/add',
+        path: 'add',
         component: () => import('@/views/oms/po/add'),
         name: 'addPO',
-        meta: { title: '新增采购订单', activeMenu: '/oms/po' }
+        meta: { title: '新增采购订单', activeMenu: '/oms/po' },
       },
       {
-        path: 'po/edit/:poId(\\d+)',
+        path: 'edit/:poId(\\d+)',
         component: () => import('@/views/oms/po/edit'),
         name: 'editPO',
-        meta: { title: '编辑采购订单', activeMenu: '/oms/po' }
+        meta: { title: '编辑采购订单', activeMenu: '/oms/po' },
+      },
+    ]
+  },
+  {
+    path: '/oms/so',
+    component: Layout,
+    hidden: true,
+    permissions: ['oms:so:query'],
+    children: [
+      {
+        path: 'add',
+        component: () => import('@/views/oms/so/add'),
+        name: 'addSO',
+        meta: { title: '新增销售订单', activeMenu: '/oms/so' },
+      },
+      {
+        path: 'edit/:soId(\\d+)',
+        component: () => import('@/views/oms/so/edit'),
+        name: 'editSO',
+        meta: { title: '编辑销售订单', activeMenu: '/oms/so' },
       }
     ]
   },

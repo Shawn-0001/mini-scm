@@ -67,6 +67,16 @@ public class CusMasterCustomerController extends BaseController {
     }
 
     /**
+     * 根据供客户代码获取客户主数据详细信息
+     */
+    @PreAuthorize("@ss.hasPermi('masterdata:customer:query')")
+    @GetMapping(value = "/code/{code}")
+    public AjaxResult getInfoByCode(@PathVariable("code") String code)
+    {
+        return success(cusMasterCustomerService.selectCustomerMasterByCode(code));
+    }
+
+    /**
      * 新增客户主数据
      */
     @PreAuthorize("@ss.hasPermi('masterdata:customer:add')")

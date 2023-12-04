@@ -17,6 +17,14 @@ export function getCustomer(id) {
   })
 }
 
+// 查询客户 by code
+export function getCustomerByCode(code) {
+  return request({
+    url: '/masterdata/customer/code/' + code,
+    method: 'get'
+  })
+}
+
 // 新增客户主数据
 export function addCustomer(data) {
   return request({

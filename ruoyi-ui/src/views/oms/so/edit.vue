@@ -4,11 +4,12 @@
       <el-divider content-position="left"> 订单信息 </el-divider>
       <el-row :gutter="10" class="mb8">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
+          <el-form-item label="订单编号" prop="orderNumber">
+            {{ form.orderNumber }}
+          </el-form-item>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
           <el-form-item label="关联合同编号" prop="contractId">
-            <!-- <el-select v-model="form.contractId" placeholder="请选择合同编号" >
-              <el-option v-for="item in contractOptions" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select> -->
             <el-input v-model="form.contractId" placeholder="请输入合同编号" />
           </el-form-item>
         </el-col>
@@ -53,8 +54,8 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
-          <el-form-item label="采购数量" prop="quantity">
-            <el-input v-model="form.quantity" placeholder="请输入采购数量" />
+          <el-form-item label="销售数量" prop="quantity">
+            <el-input v-model="form.quantity" placeholder="请输入销售数量" />
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
@@ -71,13 +72,13 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-divider content-position="left"> 供应商信息 </el-divider>
+      <el-divider content-position="left"> 客户信息 </el-divider>
       <el-row :gutter="10" class="mb8">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
-          <el-form-item label="供应商" prop="supplierCode">
-            <el-select v-model="form.supplierCode" filterable remote clearable placeholder="请输入查询关键字"
-              :remote-method="remoteMethodSupplier" :loading="remoteLoadingSupplier" @change="handleSupplierChange">
-              <el-option v-for="item in optionsSupplier" :key="item.value" :label="item.value" :value="item.value">
+          <el-form-item label="客户" prop="customerCode">
+            <el-select v-model="form.customerCode" filterable remote clearable placeholder="请输入查询关键字"
+              :remote-method="remoteMethodCustomer" :loading="remoteLoadingCustomer" @change="handleCustomerChange">
+              <el-option v-for="item in optionsCustomer" :key="item.value" :label="item.label" :value="item.value">
                 <el-tooltip class="item" effect="dark" placement="right" :content="item.label">
                   <div>{{ item.value }}</div>
                 </el-tooltip>
@@ -86,14 +87,14 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
-          <el-form-item label="供应商名称：" prop="supplierName" style="margin-left: 20px;">
-            {{ supplierName }}
+          <el-form-item label="客户名称：" prop="customerName" style="margin-left: 20px;">
+            {{ customerName }}
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
-          <el-form-item label="预计到货期" prop="deliveryDate">
+          <el-form-item label="预计交货期" prop="deliveryDate">
             <el-date-picker clearable v-model="form.deliveryDate" type="date" value-format="yyyy-MM-dd"
-              placeholder="请选择预计到货期">
+              placeholder="请选择预计交货期">
             </el-date-picker>
           </el-form-item>
         </el-col>
@@ -135,13 +136,13 @@
 </template>
 
 <script>
-import { addPo, updatePo } from "@/api/oms/po";
+import { updateSo, getSo } from "@/api/oms/so";
 import { listDept } from "@/api/system/dept"
-import { listSupplier } from "@/api/masterdata/supplier"
-import { listMaterial } from "@/api/masterdata/material"
+import { listCustomer, getCustomerByCode } from "@/api/masterdata/customer"
+import { getMaterialByCode, listMaterial } from "@/api/masterdata/material"
 
 export default {
-  name: "addPO",
+  name: "editSO",
   dicts: ['cus_tms_status', 'cus_material_unit'],
   data() {
     return {
@@ -149,12 +150,12 @@ export default {
       form: {},
       // 部门树选项
       deptOptions: [],
-      // 供应商名称选择用
-      supplierName: '',
+      // 客户名称选择用
+      customerName: '',
       materialName: '',
-      remoteLoadingSupplier: true,
+      remoteLoadingCustomer: true,
       remoteLoadingMaterial: true,
-      querySupplier: {
+      queryCustomer: {
         pageNum: 1,
         pageSize: 9999999,
         code: '',
@@ -170,9 +171,9 @@ export default {
         parentId: '100',
         status: 0
       },
-      optionsSupplier: [],
+      optionsCustomer: [],
       optionsMaterial: [],
-      listSupplier: [],
+      listCustomer: [],
       listMaterial: [],
       // 表单校验
       rules: {
@@ -189,10 +190,10 @@ export default {
           { required: true, message: "物料编码不能为空", trigger: "blur" }
         ],
         quantity: [
-          { required: true, message: "采购数量不能为空", trigger: "blur" }
+          { required: true, message: "销售数量不能为空", trigger: "blur" }
         ],
-        supplierCode: [
-          { required: true, message: "供应商编码不能为空", trigger: "blur" }
+        customerCode: [
+          { required: true, message: "客户编码不能为空", trigger: "blur" }
         ],
         unitPrice: [
           { required: true, message: "单价不能为空", trigger: "blur" }
@@ -204,27 +205,53 @@ export default {
     };
   },
   created() {
-    // set default date
-    this.$set(this.form, 'businessDate', new Date())
     // get department information
     this.getDept()
+    const soId = this.$route.params && this.$route.params.soId;
+    if (soId != null && soId != '' && soId != 'null') {
+      getSo(soId).then(response => {
+        this.form = response.data;
+        let customerCode = response.data.customerCode
+        let materialCode = response.data.materialCode
+        getCustomerByCode(customerCode).then(res => {
+          this.customerName = res.data.name
+        })
+        getMaterialByCode(materialCode).then(res => {
+          this.materialName = res.data.name
+        })
+      })
+    } else {
+      // set default date
+      this.$set(this.form, 'businessDate', new Date())
+    }
   },
   methods: {
-    /** 根据输入供应商姓名关键字，取得供应商列表 */
-    remoteMethodSupplier(query) {
+    /** 根据输入客户姓名关键字，取得客户列表 */
+    remoteMethodCustomer(query) {
       if (query !== '') {
-        this.remoteLoadingSupplier = true;
-        this.querySupplier.code = query;
-        this.supplierName = ''
-        listSupplier(this.querySupplier).then(response => {
-          this.remoteLoadingSupplier = false;
-          this.listSupplier = response.rows;
-          this.optionsSupplier = response.rows.map(item => {
+        this.remoteLoadingCustomer = true;
+        this.queryCustomer.code = query;
+        this.customerName = ''
+        listCustomer(this.queryCustomer).then(response => {
+          this.remoteLoadingCustomer = false;
+          this.listCustomer = response.rows;
+          this.optionsCustomer = response.rows.map(item => {
             return { value: `${item.code}`, label: `${item.name}` };
           })
         });
       } else {
-        this.optionsSupplier = [];
+        this.optionsCustomer = [];
+      }
+    },
+    //handleCustomerChange
+    handleCustomerChange(selectValue) {
+      if (selectValue != '') {
+        let t = this.listCustomer.find(item => {
+          return item.code == selectValue;
+        });
+        this.customerName = t.name; // 客户名称
+      } else {
+        this.listCustomer = []
       }
     },
     /** 根据输入物料编码关键字，取得物料列表 */
@@ -244,56 +271,44 @@ export default {
         this.optionsMaterial = [];
       }
     },
-    //handleSupplierChange
-    handleSupplierChange(selectValue) {
-      if (selectValue != '') {
-        let t = this.listSupplier.find(item => {
-          return item.code == selectValue;
-        });
-        this.supplierName = t.name; // 供应商名称
-      } else {
-        this.listSupplier = []
-      }
-    },
     //handleMaterialChange
     handleMaterialChange(selectValue) {
       if (selectValue != '') {
         let t = this.listMaterial.find(item => {
           return item.code == selectValue;
         });
-        this.materialName = t.name; // 供应商名称
+        this.materialName = t.name; // 客户名称
       } else {
         this.listMaterial = []
       }
     },
-    // 返回采购管理
+    // 返回销售管理
     returnPrePage() {
-      this.$store.dispatch('tagsView/delView', this.$route)
-      this.$router.push({ path: "/oms/po/list" });
+      this.$router.push({ path: "/oms/so/list" });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.orderNumber != '' && this.form.orderNumber != undefined) {
-            updatePo(this.form).then(response => {
+          // if (this.form.orderNumber != '' && this.form.orderNumber != undefined) {
+            updateSo(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               // TO DO , show order detail
               const orderNumber = this.form.orderNumber;
               this.$store.dispatch('tagsView/delView', this.$route)
               // this.$router.push('/oms/???/' + orderNumber)
-              this.$router.push('/oms/po/list')
+              this.$router.push('/oms/so/list')
             });
-          } else {
-            addPo(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              // TO DO , show order detail
-              const orderNumber = this.form.orderNumber;
-              this.$store.dispatch('tagsView/delView', this.$route)
-              // this.$router.push('/oms/???/' + orderNumber)
-              this.$router.push('/oms/po/list')
-            });
-          }
+          // } else {
+          //   addPo(this.form).then(response => {
+          //     this.$modal.msgSuccess("新增成功");
+          //     // TO DO , show order detail
+          //     const orderNumber = this.form.orderNumber;
+          //     this.$store.dispatch('tagsView/delView', this.$route)
+          //     // this.$router.push('/oms/???/' + orderNumber)
+          //     this.$router.push('/oms/so/list')
+          //   });
+          // }
         }
       });
     },

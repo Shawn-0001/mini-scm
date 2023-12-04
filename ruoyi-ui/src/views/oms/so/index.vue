@@ -5,10 +5,6 @@
         <el-input v-model="queryParams.orderNumber" placeholder="请输入订单编号" clearable @keyup.enter.native="handleQuery"
           style="width:150px" />
       </el-form-item>
-      <el-form-item label="合同编号" prop="contractId">
-        <el-input v-model="queryParams.contractId" placeholder="请输入合同编号" clearable @keyup.enter.native="handleQuery"
-          style="width:150px" />
-      </el-form-item>
       <el-form-item label="经办人" prop="handledBy">
         <el-input v-model="queryParams.handledBy" placeholder="请输入经办人" clearable @keyup.enter.native="handleQuery"
           style="width:150px" />
@@ -17,8 +13,8 @@
         <el-input v-model="queryParams.materialCode" placeholder="请输入物料编码" clearable @keyup.enter.native="handleQuery"
           style="width:150px" />
       </el-form-item>
-      <el-form-item label="供应商代码" prop="supplierCode">
-        <el-input v-model="queryParams.supplierCode" placeholder="请输入供应商代码" clearable @keyup.enter.native="handleQuery"
+      <el-form-item label="客户代码" prop="customerCode">
+        <el-input v-model="queryParams.customerCode" placeholder="请输入客户代码" clearable @keyup.enter.native="handleQuery"
           style="width:150px" />
       </el-form-item>
       <el-form-item>
@@ -30,26 +26,26 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-          v-hasPermi="['oms:po:add']">新增</el-button>
+          v-hasPermi="['oms:so:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-          v-hasPermi="['oms:po:edit']">修改</el-button>
+          v-hasPermi="['oms:so:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['oms:po:remove']">删除</el-button>
+          v-hasPermi="['oms:so:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-          v-hasPermi="['oms:po:export']">导出</el-button>
+          v-hasPermi="['oms:so:export']">导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table ref="table"   @row-click="handleRowClick" v-loading="loading" :data="poList" @selection-change="handleSelectionChange">
+    <el-table ref="table" @row-click="handleRowClick" v-loading="loading" :data="soList"
+      @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="自增序列" align="center" prop="id" />
       <el-table-column label="订单编号" align="center" prop="orderNumber" />
       <el-table-column label="订单状态" align="center" prop="status" />
       <el-table-column label="订单类型" align="center" prop="type" />
@@ -62,10 +58,10 @@
         </template>
       </el-table-column>
       <el-table-column label="物料编码" align="center" prop="materialCode" />
-      <el-table-column label="采购数量" align="center" prop="quantity" />
-      <el-table-column label="采购单价" align="center" prop="unitPrice" />
-      <el-table-column label="供应商代码" align="center" prop="supplierCode" />
-      <el-table-column label="预计到货日期" align="center" prop="deliveryDate" width="180">
+      <el-table-column label="销售数量" align="center" prop="quantity" />
+      <el-table-column label="销售单价" align="center" prop="unitPrice" />
+      <el-table-column label="客户代码" align="center" prop="customerCode" />
+      <el-table-column label="预计交货日期" align="center" prop="deliveryDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.deliveryDate, '{y}-{m}-{d}') }}</span>
         </template>
@@ -79,10 +75,10 @@
 </template>
 
 <script>
-import { listPo, delPo } from "@/api/oms/po";
+import { listSo, delSo } from "@/api/oms/so";
 
 export default {
-  name: "Po",
+  name: "so",
   data() {
     return {
       // 选中数组
@@ -95,8 +91,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 采购订单表格数据
-      poList: [],
+      // 销售订单表格数据
+      soList: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -107,7 +103,7 @@ export default {
         contractId: null,
         handledBy: null,
         materialCode: null,
-        supplierCode: null,
+        customerCode: null,
       },
     };
   },
@@ -115,11 +111,11 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询采购订单列表 */
+    /** 查询销售订单列表 */
     getList() {
       this.loading = true;
-      listPo(this.queryParams).then(response => {
-        this.poList = response.rows;
+      listSo(this.queryParams).then(response => {
+        this.soList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -142,18 +138,19 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.$router.push('/oms/po/add')
+      console.log(this.$router)
+      this.$router.push('/oms/so/add')
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      const poId = row.id || this.ids;
-      this.$router.push('/oms/po/edit/' + poId)
+      const soId = row.id || this.ids;
+      this.$router.push('/oms/so/edit/' + soId)
     },
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除采购订单编号为"' + ids + '"的数据项？').then(function () {
-        return delPo(ids);
+      this.$modal.confirm('是否确认删除销售订单编号为"' + ids + '"的数据项？').then(function () {
+        return delSo(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -161,9 +158,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('oms/po/export', {
+      this.download('oms/so/export', {
         ...this.queryParams
-      }, `po_${new Date().getTime()}.xlsx`)
+      }, `so_${new Date().getTime()}.xlsx`)
     },
     // handle row click 
     handleRowClick(row, col, event) {

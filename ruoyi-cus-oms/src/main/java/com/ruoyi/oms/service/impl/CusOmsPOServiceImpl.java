@@ -51,9 +51,6 @@ public class CusOmsPOServiceImpl implements ICusOmsPOService {
     @Override
     public int insertCusOmsPO(CusOmsPO cusOmsPO) {
         String currentNumber = cusOmsPOMapper.getCurrentPONumber();
-//        System.out.println("-------------------------------------------");
-//        System.out.println(currentNumber);
-//        System.out.println("-------------------------------------------");
         String newNumber = "";
         if (currentNumber != null && currentNumber != "") {
             int n = Integer.parseInt(currentNumber) + 1;

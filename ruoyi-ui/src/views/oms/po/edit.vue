@@ -37,8 +37,18 @@
       <el-divider content-position="left"> 物料信息 </el-divider>
       <el-row :gutter="10" class="mb8">
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
-          <el-form-item label="物料编码" prop="materialCode">
+          <!-- <el-form-item label="物料编码" prop="materialCode">
             <el-input v-model="form.materialCode" placeholder="请输入物料编码" />
+          </el-form-item> -->
+          <el-form-item label="物料编码" prop="materialCode">
+            <el-select v-model="form.materialCode" filterable remote clearable placeholder="请输入查询关键字"
+              :remote-method="remoteMethodMaterial" :loading="remoteLoadingMaterial" @change="handleMaterialChange">
+              <el-option v-for="item in optionsMaterial" :key="item.value" :label="item.value" :value="item.value">
+                <el-tooltip class="item" effect="dark" placement="right" :content="item.label">
+                  <div>{{ item.value }}</div>
+                </el-tooltip>
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
@@ -85,8 +95,8 @@
           </el-form-item>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="4">
-          <el-form-item label="预计到货期" prop="arrivalDate">
-            <el-date-picker clearable v-model="form.arrivalDate" type="date" value-format="yyyy-MM-dd"
+          <el-form-item label="预计到货期" prop="deliveryDate">
+            <el-date-picker clearable v-model="form.deliveryDate" type="date" value-format="yyyy-MM-dd"
               placeholder="请选择预计到货期">
             </el-date-picker>
           </el-form-item>
@@ -114,12 +124,12 @@
           </el-form-item>
         </el-col> -->
         <el-col :span="24">
-          <el-form-item label="备注" prop="orderRemark">
-            <el-input v-model="form.orderRemark" type="textarea" style="width: 86%" maxlength="128" show-word-limit />
+          <el-form-item label="备注" prop="remark">
+            <el-input v-model="form.remark" type="textarea" style="width: 86%" maxlength="128" show-word-limit />
           </el-form-item>
         </el-col>
       </el-row>
-      <el-divider content-position="left"> 交货单明细 </el-divider>
+      <!-- <el-divider content-position="left"> 交货单明细 </el-divider> -->
     </el-form>
     <div slot="footer" class="dialog-footer" style="text-align: center; margin-top: 50px;">
       <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -132,7 +142,7 @@
 import { addPo, updatePo, getPo } from "@/api/oms/po";
 import { listDept } from "@/api/system/dept"
 import { listSupplier, getSupplierByCode } from "@/api/masterdata/supplier"
-import { getMaterialByCode } from "@/api/masterdata/material"
+import { getMaterialByCode, listMaterial } from "@/api/masterdata/material"
 
 export default {
   name: "editPO",
@@ -145,10 +155,16 @@ export default {
       deptOptions: [],
       // 供应商名称选择用
       supplierName: '',
-      // 选择物料用
       materialName: '',
       remoteLoadingSupplier: true,
+      remoteLoadingMaterial: true,
       querySupplier: {
+        pageNum: 1,
+        pageSize: 9999999,
+        code: '',
+        name: ''
+      },
+      queryMaterial: {
         pageNum: 1,
         pageSize: 9999999,
         code: '',
@@ -159,7 +175,9 @@ export default {
         status: 0
       },
       optionsSupplier: [],
+      optionsMaterial: [],
       listSupplier: [],
+      listMaterial: [],
       // 表单校验
       rules: {
         handledBy: [
@@ -171,14 +189,14 @@ export default {
         businessDate: [
           { required: true, message: "业务日期不能为空", trigger: "blur" }
         ],
-        materialName: [
-          { required: true, message: "物料名称不能为空", trigger: "blur" }
+        materialCode: [
+          { required: true, message: "物料编码不能为空", trigger: "blur" }
         ],
         quantity: [
           { required: true, message: "采购数量不能为空", trigger: "blur" }
         ],
         supplierCode: [
-          { required: true, message: "供应商名称不能为空", trigger: "blur" }
+          { required: true, message: "供应商编码不能为空", trigger: "blur" }
         ],
         unitPrice: [
           { required: true, message: "单价不能为空", trigger: "blur" }
@@ -190,8 +208,6 @@ export default {
     };
   },
   created() {
-    // set default date
-    this.$set(this.form, 'businessDate', new Date())
     // get department information
     this.getDept()
     const poId = this.$route.params && this.$route.params.poId;
@@ -200,13 +216,16 @@ export default {
         this.form = response.data;
         let supplierCode = response.data.supplierCode
         let materialCode = response.data.materialCode
-        getSupplierByCode(supplierCode).then( res => {
+        getSupplierByCode(supplierCode).then(res => {
           this.supplierName = res.data.name
         })
-        getMaterialByCode(materialCode).then( res => {
+        getMaterialByCode(materialCode).then(res => {
           this.materialName = res.data.name
         })
       })
+    } else {
+      // set default date
+      this.$set(this.form, 'businessDate', new Date())
     }
   },
   methods: {
@@ -227,6 +246,34 @@ export default {
         this.optionsSupplier = [];
       }
     },
+    /** 根据输入物料编码关键字，取得物料列表 */
+    remoteMethodMaterial(query) {
+      if (query !== '') {
+        this.remoteLoadingMaterial = true;
+        this.queryMaterial.code = query;
+        this.materialName = ''
+        listMaterial(this.queryMaterial).then(response => {
+          this.remoteLoadingMaterial = false;
+          this.listMaterial = response.rows;
+          this.optionsMaterial = response.rows.map(item => {
+            return { value: `${item.code}`, label: `${item.name}` };
+          })
+        });
+      } else {
+        this.optionsMaterial = [];
+      }
+    },
+    //handleMaterialChange
+    handleMaterialChange(selectValue) {
+      if (selectValue != '') {
+        let t = this.listMaterial.find(item => {
+          return item.code == selectValue;
+        });
+        this.materialName = t.name; // 供应商名称
+      } else {
+        this.listMaterial = []
+      }
+    },
     //handleSupplierChange
     handleSupplierChange(selectValue) {
       if (selectValue != '') {
@@ -240,7 +287,8 @@ export default {
     },
     // 返回采购管理
     returnPrePage() {
-      this.$router.push({ path: "/oms/po" });
+      this.$store.dispatch('tagsView/delView', this.$route)
+      this.$router.push({ path: "/oms/po/list" });
     },
     /** 提交按钮 */
     submitForm() {
@@ -253,7 +301,7 @@ export default {
               const orderNumber = this.form.orderNumber;
               this.$store.dispatch('tagsView/delView', this.$route)
               // this.$router.push('/oms/???/' + orderNumber)
-              this.$router.push('/oms/po')
+              this.$router.push('/oms/po/list')
             });
           } else {
             addPo(this.form).then(response => {
@@ -262,7 +310,7 @@ export default {
               const orderNumber = this.form.orderNumber;
               this.$store.dispatch('tagsView/delView', this.$route)
               // this.$router.push('/oms/???/' + orderNumber)
-              this.$router.push('/oms/po')
+              this.$router.push('/oms/po/list')
             });
           }
         }

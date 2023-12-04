@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.oms.mapper.CusOmsSoMapper">
+    
+    <resultMap type="CusOmsSo" id="CusOmsSoResult">
+        <result property="id"    column="id"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="status"    column="status"    />
+        <result property="type"    column="type"    />
+        <result property="contractId"    column="contract_id"    />
+        <result property="handledBy"    column="handled_by"    />
+        <result property="department"    column="department"    />
+        <result property="businessDate"    column="business_date"    />
+        <result property="materialCode"    column="material_code"    />
+        <result property="unit"    column="unit"    />
+        <result property="quantity"    column="quantity"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="customerCode"    column="customer_code"    />
+        <result property="deliveryDate"    column="delivery_date"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCusOmsSoVo">
+        select id, order_number, status, type, contract_id, handled_by, department, business_date, material_code, unit, quantity, unit_price, customer_code, delivery_date, remark, create_by, create_time, update_by, update_time from cus_oms_so
+    </sql>
+
+    <select id="selectCusOmsSoList" parameterType="CusOmsSo" resultMap="CusOmsSoResult">
+        <include refid="selectCusOmsSoVo"/>
+        <where>  
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number like concat('%', #{orderNumber}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="handledBy != null  and handledBy != ''"> and handled_by like concat('%', #{handledBy}, '%')</if>
+            <if test="materialCode != null  and materialCode != ''"> and material_code like concat('%', #{materialCode}, '%')</if>
+            <if test="customerCode != null  and customerCode != ''"> and customer_code = #{customerCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectCusOmsSoById" parameterType="Long" resultMap="CusOmsSoResult">
+        <include refid="selectCusOmsSoVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="getCurrentSONumber" resultType="String">
+        select max(order_number) from cus_oms_so
+    </select>
+
+    <insert id="insertCusOmsSo" parameterType="CusOmsSo" useGeneratedKeys="true" keyProperty="id">
+        insert into cus_oms_so
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null and orderNumber != ''">order_number,</if>
+            <if test="status != null">status,</if>
+            <if test="type != null">type,</if>
+            <if test="contractId != null">contract_id,</if>
+            <if test="handledBy != null">handled_by,</if>
+            <if test="department != null">department,</if>
+            <if test="businessDate != null">business_date,</if>
+            <if test="materialCode != null and materialCode != ''">material_code,</if>
+            <if test="unit != null and unit != ''">unit,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="customerCode != null and customerCode != ''">customer_code,</if>
+            <if test="deliveryDate != null">delivery_date,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null and orderNumber != ''">#{orderNumber},</if>
+            <if test="status != null">#{status},</if>
+            <if test="type != null">#{type},</if>
+            <if test="contractId != null">#{contractId},</if>
+            <if test="handledBy != null">#{handledBy},</if>
+            <if test="department != null">#{department},</if>
+            <if test="businessDate != null">#{businessDate},</if>
+            <if test="materialCode != null and materialCode != ''">#{materialCode},</if>
+            <if test="unit != null and unit != ''">#{unit},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="customerCode != null and customerCode != ''">#{customerCode},</if>
+            <if test="deliveryDate != null">#{deliveryDate},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCusOmsSo" parameterType="CusOmsSo">
+        update cus_oms_so
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNumber != null and orderNumber != ''">order_number = #{orderNumber},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="contractId != null">contract_id = #{contractId},</if>
+            <if test="handledBy != null">handled_by = #{handledBy},</if>
+            <if test="department != null">department = #{department},</if>
+            <if test="businessDate != null">business_date = #{businessDate},</if>
+            <if test="materialCode != null and materialCode != ''">material_code = #{materialCode},</if>
+            <if test="unit != null and unit != ''">unit = #{unit},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="customerCode != null and customerCode != ''">customer_code = #{customerCode},</if>
+            <if test="deliveryDate != null">delivery_date = #{deliveryDate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCusOmsSoById" parameterType="Long">
+        delete from cus_oms_so where id = #{id}
+    </delete>
+
+    <delete id="deleteCusOmsSoByIds" parameterType="String">
+        delete from cus_oms_so where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
